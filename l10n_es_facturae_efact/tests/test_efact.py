@@ -131,7 +131,7 @@ class TestL10nEsFacturae(common.SavepointCase):
                 "unidad_tramitadora": "U00000038",
                 "oficina_contable": "U00000038",
                 "facturae_efact_code": "0123456789012345678901",
-                "invoice_integration_method_ids": [
+                "move_integration_method_ids": [
                     (
                         6,
                         0,
@@ -228,7 +228,7 @@ class TestL10nEsFacturae(common.SavepointCase):
                 "user_type_id": self.env.ref("account.data_account_type_revenue").id,
             }
         )
-        self.invoice = self.env["account.invoice"].create(
+        self.move = self.env["account.move"].create(
             {
                 "partner_id": self.partner.id,
                 "account_id": self.partner.property_account_receivable_id.id,
@@ -238,19 +238,19 @@ class TestL10nEsFacturae(common.SavepointCase):
                 "payment_mode_id": self.payment_mode.id,
             }
         )
-        self.invoice_line = self.env["account.invoice.line"].create(
+        self.move_line = self.env["account.move.line"].create(
             {
                 "product_id": self.env.ref("product.product_delivery_02").id,
                 "account_id": account.id,
-                "invoice_id": self.invoice.id,
+                "move_id": self.move.id,
                 "name": "Producto de prueba",
                 "quantity": 1.0,
                 "price_unit": 100.0,
-                "invoice_line_tax_ids": [(6, 0, self.tax.ids)],
+                "move_line_tax_ids": [(6, 0, self.tax.ids)],
             }
         )
-        self.invoice._onchange_invoice_line_ids()
-        self.invoice.action_invoice_open()
+        self.invoice._onchange_move_line_ids()
+        self.invoice.action_move_open()
         self.invoice.number = "R/0001"
 
     def test_constrain_facturae_code_01(self):
@@ -280,11 +280,11 @@ class TestL10nEsFacturae(common.SavepointCase):
     def test_efact_sending(self):
         patch_class = (
             "odoo.addons.l10n_es_facturae_efact.models."
-            "account_invoice_integration_log.SSHClient"
+            "account_move_integration_log.SSHClient"
         )
         self.invoice.action_integrations()
-        integration = self.env["account.invoice.integration"].search(
-            [("invoice_id", "=", self.invoice.id)]
+        integration = self.env["account.move.integration"].search(
+            [("move_id", "=", self.move.id)]
         )
         self.assertEqual(integration.method_code, "eFACT")
         self.assertEqual(integration.can_send, True)
@@ -292,9 +292,9 @@ class TestL10nEsFacturae(common.SavepointCase):
             {
                 "name": "attach.txt",
                 "datas": base64.b64encode(b"attachment"),
-                "datas_fname": "attach.txt",
-                "res_model": "account.invoice",
-                "res_id": self.invoice.id,
+                "store_fname": "attach.txt",
+                "res_model": "account.move",
+                "res_id": self.move.id,
                 "mimetype": "text/plain",
             }
         )
@@ -306,7 +306,7 @@ class TestL10nEsFacturae(common.SavepointCase):
         with self.assertRaises(exceptions.UserError):
             integration.update_action()
         with self.assertRaises(exceptions.ValidationError):
-            self.env["account.invoice.integration.cancel"].create(
+            self.env["account.move.integration.cancel"].create(
                 {"integration_id": integration.id}
             ).cancel_integration()
         with patch(patch_class) as mock:
@@ -320,18 +320,18 @@ class TestL10nEsFacturae(common.SavepointCase):
                 ),
                 integration.efact_reference + "@001",
             )
-            self.env["account.invoice.integration.log"].efact_check_history()
+            self.env["account.move.integration.log"].efact_check_history()
         self.assertEqual(integration.efact_hub_id, "12")
         self.assertEqual(integration.register_number, "111")
 
     def test_efact_sending_error(self):
         patch_class = (
             "odoo.addons.l10n_es_facturae_efact.models."
-            "account_invoice_integration_log.SSHClient"
+            "account_move_integration_log.SSHClient"
         )
         self.invoice.action_integrations()
-        integration = self.env["account.invoice.integration"].search(
-            [("invoice_id", "=", self.invoice.id)]
+        integration = self.env["account.move.integration"].search(
+            [("move_id", "=", self.move.id)]
         )
         self.assertEqual(integration.method_code, "eFACT")
         self.assertEqual(integration.can_send, True)
@@ -339,9 +339,9 @@ class TestL10nEsFacturae(common.SavepointCase):
             {
                 "name": "attach.txt",
                 "datas": base64.b64encode(b"attachment"),
-                "datas_fname": "attach.txt",
-                "res_model": "account.invoice",
-                "res_id": self.invoice.id,
+                "store_fname": "attach.txt",
+                "res_model": "account.move",
+                "res_id": self.move.id,
                 "mimetype": "text/plain",
             }
         )
@@ -353,7 +353,7 @@ class TestL10nEsFacturae(common.SavepointCase):
         with self.assertRaises(exceptions.UserError):
             integration.update_action()
         with self.assertRaises(exceptions.ValidationError):
-            self.env["account.invoice.integration.cancel"].create(
+            self.env["account.move.integration.cancel"].create(
                 {"integration_id": integration.id}
             ).cancel_integration()
         with patch(patch_class) as mock:
@@ -367,6 +367,6 @@ class TestL10nEsFacturae(common.SavepointCase):
                 ),
                 integration.efact_reference + "@001",
             )
-            self.env["account.invoice.integration.log"].efact_check_history()
+            self.env["account.move.integration.log"].efact_check_history()
         self.assertEqual(integration.efact_hub_id, "12")
         self.assertEqual(integration.register_number, False)

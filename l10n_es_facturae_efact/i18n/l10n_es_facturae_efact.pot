@@ -14,34 +14,34 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Accepted"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Accounted obligation"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Cancellation approved"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: code:addons/l10n_es_facturae_efact/models/account_invoice_integration_method.py:20
+#: code:addons/l10n_es_facturae_efact/models/account_move_integration_method.py:20
 #, python-format
 msgid "Certificate must be added for company"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: code:addons/l10n_es_facturae_efact/models/account_invoice_integration_method.py:23
+#: code:addons/l10n_es_facturae_efact/models/account_move_integration_method.py:23
 #, python-format
 msgid "Certificate password must be added for company"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_invoice_integration__method_code
+#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_move_integration__method_code
 msgid "Code"
 msgstr ""
 
@@ -67,17 +67,17 @@ msgid "Country must be defined in order to send to e.Fact"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Delivered"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_invoice_integration__efact_hub_id
+#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_move_integration__efact_hub_id
 msgid "Efact Hub"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_invoice_integration__efact_reference
+#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_move_integration__efact_reference
 msgid "Efact Reference"
 msgstr ""
 
@@ -88,67 +88,67 @@ msgid "Facturae must be selected in order to send to e.Fact"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_invoice_integration_log__hub_message_id
+#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_move_integration_log__hub_message_id
 msgid "Hub Message"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_invoice_integration__integration_status
+#: model:ir.model.fields,field_description:l10n_es_facturae_efact.field_account_move_integration__integration_status
 msgid "Integration Status"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model,name:l10n_es_facturae_efact.model_account_invoice_integration
+#: model:ir.model,name:l10n_es_facturae_efact.model_account_move_integration
 msgid "Integration for an invoice"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model,name:l10n_es_facturae_efact.model_account_invoice_integration_method
+#: model:ir.model,name:l10n_es_facturae_efact.model_account_move_integration_method
 msgid "Integration method for invoices"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Paid"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Payed"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on RCF"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on REC"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on RFC"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Rejected"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: model:ir.model,name:l10n_es_facturae_efact.model_account_invoice_integration_log
+#: model:ir.model,name:l10n_es_facturae_efact.model_account_move_integration_log
 msgid "Result logs for integrations of invoices"
 msgstr ""
 
 #. module: l10n_es_facturae_efact
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Sended"
 msgstr ""
 

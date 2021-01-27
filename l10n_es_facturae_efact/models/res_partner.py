@@ -15,14 +15,12 @@ class ResPartner(models.Model):
         "vat",
         "country_id",
         "state_id",
-        "invoice_integration_method_ids",
+        "move_integration_method_ids",
         "facturae_efact_code",
     )
     def constrain_efact(self):
         efact = self.env.ref("l10n_es_facturae_efact.integration_efact")
-        for record in self.filtered(
-            lambda x: efact in x.invoice_integration_method_ids
-        ):
+        for record in self.filtered(lambda x: efact in x.move_integration_method_ids):
             if not record.facturae:
                 raise exceptions.ValidationError(
                     _("Facturae must be selected in order to send to e.Fact")

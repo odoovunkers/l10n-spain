@@ -20,8 +20,8 @@ adjin_path = "/adjin"
 statout_path = "/statout"
 
 
-class AccountInvoiceIntegration(models.Model):
-    _inherit = "account.invoice.integration.log"
+class AccountMoveIntegration(models.Model):
+    _inherit = "account.move.integration.log"
 
     hub_message_id = fields.Char(readonly=True)
 
@@ -30,19 +30,19 @@ class AccountInvoiceIntegration(models.Model):
         connection = SSHClient()
         connection.load_system_host_keys()
         connection.connect(
-            ICP.get_param("account.invoice.efact.server", default=None),
-            port=int(ICP.get_param("account.invoice.efact.port", default=None)),
-            username=ICP.get_param("account.invoice.efact.user", default=None),
-            password=ICP.get_param("account.invoice.efact.password", default=None),
+            ICP.get_param("account.move.efact.server", default=None),
+            port=int(ICP.get_param("account.move.efact.port", default=None)),
+            username=ICP.get_param("account.move.efact.user", default=None),
+            password=ICP.get_param("account.move.efact.password", default=None),
         )
         sftp = connection.open_sftp()
         return connection, sftp
 
     def get_filename(self, annex=""):
-        invoice = self.integration_id.invoice_id
-        filename = invoice.company_id.facturae_efact_code + "@"
-        filename += invoice.partner_id.facturae_efact_code + "@"
-        filename += invoice.number.replace("/", "_")
+        move = self.integration_id.move_id
+        filename = move.company_id.facturae_efact_code + "@"
+        filename += move.partner_id.facturae_efact_code + "@"
+        filename += move.number.replace("/", "_")
         if len(annex) > 0:
             filename += "@" + annex
         return filename
@@ -54,10 +54,10 @@ class AccountInvoiceIntegration(models.Model):
             hub_feedback = status.find("HubFeedback")
             if hub_feedback is None:
                 continue
-            invoice_feedback = status.find("InvoiceFeedback")
+            move_feedback = status.find("InvoiceFeedback")
             hub_id = hub_feedback.find("HubId").text
-            if invoice_feedback is not None:
-                integration = self.env["account.invoice.integration"].search(
+            if move_feedback is not None:
+                integration = self.env["account.move.integration"].search(
                     [
                         (
                             "method_id",
@@ -68,7 +68,7 @@ class AccountInvoiceIntegration(models.Model):
                     ]
                 )
                 if not integration:
-                    integration = self.env["account.invoice.integration"].search(
+                    integration = self.env["account.move.integration"].search(
                         [
                             (
                                 "method_id",
@@ -86,8 +86,8 @@ class AccountInvoiceIntegration(models.Model):
                         ]
                     )
                     integration.efact_hub_id = hub_id
-                for feedback in invoice_feedback.findall("Feedback"):
-                    self.env["account.invoice.integration.log"].create(
+                for feedback in move_feedback.findall("Feedback"):
+                    self.env["account.move.integration.log"].create(
                         {
                             "type": "update",
                             "integration_id": integration.id,
@@ -114,14 +114,14 @@ class AccountInvoiceIntegration(models.Model):
                         {
                             "name": annex_name,
                             "datas": annex.find("document").text,
-                            "datas_fname": annex_name,
-                            "res_model": "account.invoice.integration",
+                            "store_fname": annex_name,
+                            "res_model": "account.move.integration",
                             "res_id": integration.id,
                             "mimetype": "application/xml",
                         }
                     )
             else:
-                integration = self.env["account.invoice.integration"].search(
+                integration = self.env["account.move.integration"].search(
                     [
                         (
                             "method_id",
@@ -133,7 +133,7 @@ class AccountInvoiceIntegration(models.Model):
                     ]
                 )
                 integration.efact_hub_id = hub_id
-                self.env["account.invoice.integration.log"].create(
+                self.env["account.move.integration.log"].create(
                     {
                         "type": "update",
                         "integration_id": integration.id,
@@ -189,7 +189,7 @@ class AccountInvoiceIntegration(models.Model):
             sftp.close()
             connection.close()
             return
-        return super(AccountInvoiceIntegration, self).send_method()
+        return super(AccountMoveIntegration, self).send_method()
 
     def efact_check_history(self):
         connection, sftp = self._efact_connect()

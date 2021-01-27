@@ -5,8 +5,8 @@
 from odoo import fields, models
 
 
-class AccountInvoiceIntegration(models.Model):
-    _inherit = "account.invoice.integration"
+class AccountMoveIntegration(models.Model):
+    _inherit = "account.move.integration"
 
     integration_status = fields.Selection(
         selection_add=[

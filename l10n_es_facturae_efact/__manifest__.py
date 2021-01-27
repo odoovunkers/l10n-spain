@@ -4,7 +4,7 @@
 
 {
     "name": "Envío de Factura-e a e.FACT",
-    "version": "12.0.1.0.3",
+    "version": "13.0.1.0.0",
     "author": "Creu Blanca, " "Odoo Community Association (OCA)",
     "category": "Accounting & Finance",
     "website": "https://github.com/OCA/l10n-spain",
@@ -13,7 +13,7 @@
     "data": [
         "data/efact_data.xml",
         "views/res_partner_view.xml",
-        "views/account_invoice_integration_view.xml",
+        "views/account_move_integration_view.xml",
         "views/res_config_views.xml",
         "views/res_company_view.xml",
     ],
