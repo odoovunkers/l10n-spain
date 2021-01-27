@@ -14,59 +14,59 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Accepted"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Accounted obligation"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_invoice_integration__cancellation_status
+#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_move_integration__cancellation_status
 msgid "Cancellation Status"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,cancellation_status:0
+#: selection:account.move.integration,cancellation_status:0
 msgid "Cancellation accepted"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Cancellation approved"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,cancellation_status:0
+#: selection:account.move.integration,cancellation_status:0
 msgid "Cancellation rejected"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,cancellation_status:0
+#: selection:account.move.integration,cancellation_status:0
 msgid "Cancellation requested"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model,name:l10n_es_facturae_face.model_account_invoice_integration_cancel
+#: model:ir.model,name:l10n_es_facturae_face.model_account_move_integration_cancel
 msgid "Cancels a created integration"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: code:addons/l10n_es_facturae_face/models/account_invoice_integration_method.py:20
+#: code:addons/l10n_es_facturae_face/models/account_move_integration_method.py:20
 #, python-format
 msgid "Certificate must be added for company"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: code:addons/l10n_es_facturae_face/models/account_invoice_integration_method.py:23
+#: code:addons/l10n_es_facturae_face/models/account_move_integration_method.py:23
 #, python-format
 msgid "Certificate password must be added for company"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_invoice_integration_cancel__method_code
+#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_move_integration_cancel__method_code
 msgid "Code"
 msgstr ""
 
@@ -76,12 +76,12 @@ msgid "Companies"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_invoice_integration__company_id
+#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_move_integration__company_id
 msgid "Company"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: code:addons/l10n_es_facturae_face/models/account_invoice_integration.py:81
+#: code:addons/l10n_es_facturae_face/models/account_move_integration.py:81
 #, python-format
 msgid "Company %s cannot be processed"
 msgstr ""
@@ -103,7 +103,7 @@ msgid "Country must be defined in order to send to FACe"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Delivered"
 msgstr ""
 
@@ -136,17 +136,17 @@ msgid "Facturae must be selected in order to send to FACe"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_invoice_integration__integration_status
+#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_move_integration__integration_status
 msgid "Integration Status"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model,name:l10n_es_facturae_face.model_account_invoice_integration
+#: model:ir.model,name:l10n_es_facturae_face.model_account_move_integration
 msgid "Integration for an invoice"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model,name:l10n_es_facturae_face.model_account_invoice_integration_method
+#: model:ir.model,name:l10n_es_facturae_face.model_account_move_integration_method
 msgid "Integration method for invoices"
 msgstr ""
 
@@ -157,57 +157,57 @@ msgid "Invalid facturae email"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_invoice_integration_cancel__motive
+#: model:ir.model.fields,field_description:l10n_es_facturae_face.field_account_move_integration_cancel__motive
 msgid "Motive"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,cancellation_status:0
+#: selection:account.move.integration,cancellation_status:0
 msgid "Not requested"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Paid"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Payed"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on RCF"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on REC"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Registered on RFC"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Rejected"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: model:ir.model,name:l10n_es_facturae_face.model_account_invoice_integration_log
+#: model:ir.model,name:l10n_es_facturae_face.model_account_move_integration_log
 msgid "Result logs for integrations of invoices"
 msgstr ""
 
 #. module: l10n_es_facturae_face
-#: selection:account.invoice.integration,integration_status:0
+#: selection:account.move.integration,integration_status:0
 msgid "Sended"
 msgstr ""
 

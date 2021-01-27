@@ -9,11 +9,11 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     @api.constrains(
-        "facturae", "vat", "country_id", "state_id", "invoice_integration_method_ids"
+        "facturae", "vat", "country_id", "state_id", "move_integration_method_ids"
     )
     def constrain_face(self):
         face = self.env.ref("l10n_es_facturae_face.integration_face")
-        for record in self.filtered(lambda x: face in x.invoice_integration_method_ids):
+        for record in self.filtered(lambda x: face in x.move_integration_method_ids):
             if not record.facturae:
                 raise exceptions.ValidationError(
                     _("Facturae must be selected in order to send to FACe")

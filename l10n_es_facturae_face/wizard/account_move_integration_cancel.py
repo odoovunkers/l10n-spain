@@ -3,15 +3,15 @@
 from odoo import fields, models
 
 
-class AccountInvoiceIntegrationCancel(models.TransientModel):
-    _inherit = "account.invoice.integration.cancel"
+class AccountMoveIntegrationCancel(models.TransientModel):
+    _inherit = "account.move.integration.cancel"
     _description = "Cancels a created integration"
 
     motive = fields.Char()
     method_code = fields.Char(related="integration_id.method_id.code")
 
     def cancel_values(self):
-        res = super(AccountInvoiceIntegrationCancel, self).cancel_values()
+        res = super(AccountMoveIntegrationCancel, self).cancel_values()
         if self.method_code == "FACe":
             res["cancellation_motive"] = self.motive
         return res

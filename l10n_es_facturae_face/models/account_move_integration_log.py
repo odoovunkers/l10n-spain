@@ -18,23 +18,23 @@ except (ImportError, IOError) as err:
 ns = "https://ssweb.seap.minhap.es/web-service-test-face/sspp"
 
 
-class AccountInvoiceIntegration(models.Model):
-    _inherit = "account.invoice.integration.log"
+class AccountMoveIntegration(models.Model):
+    _inherit = "account.move.integration.log"
 
     def update_method(self):
         if self.integration_id.method_id == self.env.ref(
             "l10n_es_facturae_face.integration_face"
         ):
-            invoice = self.integration_id.invoice_id
+            move = self.integration_id.move_id
             cert = crypto.load_pkcs12(
-                base64.b64decode(invoice.company_id.facturae_cert),
-                invoice.company_id.facturae_cert_password,
+                base64.b64decode(move.company_id.facturae_cert),
+                move.company_id.facturae_cert_password,
             )
             cert.set_ca_certificates(None)
             client = Client(
                 wsdl=self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("account.invoice.face.server", default=None),
+                .get_param("account.move.face.server", default=None),
                 wsse=MemorySignature(
                     cert.export(),
                     base64.b64decode(
@@ -60,22 +60,22 @@ class AccountInvoiceIntegration(models.Model):
             else:
                 self.state = "failed"
             return
-        return super(AccountInvoiceIntegration, self).update_method()
+        return super(AccountMoveIntegration, self).update_method()
 
     def cancel_method(self):
         if self.integration_id.method_id == self.env.ref(
             "l10n_es_facturae_face.integration_face"
         ):
-            invoice = self.integration_id.invoice_id
+            move = self.integration_id.move_id
             cert = crypto.load_pkcs12(
-                base64.b64decode(invoice.company_id.facturae_cert),
-                invoice.company_id.facturae_cert_password,
+                base64.b64decode(move.company_id.facturae_cert),
+                move.company_id.facturae_cert_password,
             )
             cert.set_ca_certificates(None)
             client = Client(
                 wsdl=self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("account.invoice.face.server", default=None),
+                .get_param("account.move.face.server", default=None),
                 wsse=MemorySignature(
                     cert.export(),
                     base64.b64decode(
@@ -95,22 +95,22 @@ class AccountInvoiceIntegration(models.Model):
             else:
                 self.state = "failed"
             return
-        return super(AccountInvoiceIntegration, self).cancel_method()
+        return super(AccountMoveIntegration, self).cancel_method()
 
     def send_method(self):
         if self.integration_id.method_id == self.env.ref(
             "l10n_es_facturae_face.integration_face"
         ):
-            invoice = self.integration_id.invoice_id
+            move = self.integration_id.move_id
             cert = crypto.load_pkcs12(
-                base64.b64decode(invoice.company_id.facturae_cert),
-                invoice.company_id.facturae_cert_password,
+                base64.b64decode(move.company_id.facturae_cert),
+                move.company_id.facturae_cert_password,
             )
             cert.set_ca_certificates(None)
             client = Client(
                 wsdl=self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("account.invoice.face.server", default=None),
+                .get_param("account.move.face.server", default=None),
                 wsse=MemorySignature(
                     cert.export(),
                     base64.b64decode(
@@ -118,23 +118,23 @@ class AccountInvoiceIntegration(models.Model):
                     ),
                 ),
             )
-            invoice_file = client.get_type("ns0:FacturaFile")(
+            move_file = client.get_type("ns0:FacturaFile")(
                 self.integration_id.attachment_id.datas,
-                self.integration_id.attachment_id.datas_fname,
+                self.integration_id.attachment_id.store_fname,
                 self.integration_id.attachment_id.mimetype,
             )
             anexos_list = []
             if self.integration_id.attachment_ids:
                 for attachment in self.integration_id.attachment_ids:
                     anexo = client.get_type("ns0:AnexoFile")(
-                        attachment.datas, attachment.datas_fname, attachment.mimetype
+                        attachment.datas, attachment.store_fname, attachment.mimetype
                     )
                     anexos_list.append(anexo)
             anexos = client.get_type("ns0:ArrayOfAnexoFile")(anexos_list)
-            invoice_call = client.get_type("ns0:EnviarFacturaRequest")(
-                invoice.company_id.face_email, invoice_file, anexos
+            move_call = client.get_type("ns0:EnviarFacturaRequest")(
+                move.company_id.face_email, move_file, anexos
             )
-            response = client.service.enviarFactura(invoice_call)
+            response = client.service.enviarFactura(move_call)
             self.result_code = response.resultado.codigo
             self.log = response.resultado.descripcion
             if self.result_code == "0":
@@ -149,4 +149,4 @@ class AccountInvoiceIntegration(models.Model):
                 self.integration_id.state = "failed"
                 self.state = "failed"
             return
-        return super(AccountInvoiceIntegration, self).send_method()
+        return super(AccountMoveIntegration, self).send_method()

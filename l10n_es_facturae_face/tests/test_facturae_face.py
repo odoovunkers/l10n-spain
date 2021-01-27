@@ -62,7 +62,7 @@ class TestL10nEsFacturaeFACe(common.TransactionCase):
                 "organo_gestor": "U00000038",
                 "unidad_tramitadora": "U00000038",
                 "oficina_contable": "U00000038",
-                "invoice_integration_method_ids": [
+                "move_integration_method_ids": [
                     (6, 0, [self.env.ref("l10n_es_facturae_face.integration_face").id])
                 ],
             }
@@ -136,7 +136,7 @@ class TestL10nEsFacturaeFACe(common.TransactionCase):
                 "user_type_id": self.env.ref("account.data_account_type_revenue").id,
             }
         )
-        self.invoice = self.env["account.invoice"].create(
+        self.move = self.env["account.move"].create(
             {
                 "partner_id": self.partner.id,
                 "account_id": self.partner.property_account_receivable_id.id,
@@ -146,20 +146,20 @@ class TestL10nEsFacturaeFACe(common.TransactionCase):
                 "payment_mode_id": self.payment_mode.id,
             }
         )
-        self.invoice_line = self.env["account.invoice.line"].create(
+        self.move_line = self.env["account.move.line"].create(
             {
                 "product_id": self.env.ref("product.product_delivery_02").id,
                 "account_id": account.id,
-                "invoice_id": self.invoice.id,
+                "move_id": self.move.id,
                 "name": "Producto de prueba",
                 "quantity": 1.0,
                 "price_unit": 100.0,
-                "invoice_line_tax_ids": [(6, 0, self.tax.ids)],
+                "move_line_tax_ids": [(6, 0, self.tax.ids)],
             }
         )
-        self.invoice._onchange_invoice_line_ids()
-        self.invoice.action_invoice_open()
-        self.invoice.number = "2999/99998"
+        self.move._onchange_move_line_ids()
+        self.move.action_move_open()
+        self.move.number = "2999/99998"
 
     def test_facturae_face(self):
         class DemoService(object):
@@ -182,15 +182,15 @@ class TestL10nEsFacturaeFACe(common.TransactionCase):
         with self.assertRaises(exceptions.ValidationError):
             main_company.face_email = "test"
         main_company.face_email = "test@test.com"
-        self.invoice.action_integrations()
-        integration = self.env["account.invoice.integration"].search(
-            [("invoice_id", "=", self.invoice.id)]
+        self.move.action_integrations()
+        integration = self.env["account.move.integration"].search(
+            [("move_id", "=", self.move.id)]
         )
         self.assertEqual(integration.method_id.code, "FACe")
         self.assertEqual(integration.can_send, True)
         client = Client(
             wsdl=self.env["ir.config_parameter"].get_param(
-                "account.invoice.face.server", default=None
+                "account.move.face.server", default=None
             )
         )
         integration.send_action()
@@ -259,7 +259,7 @@ class TestL10nEsFacturaeFACe(common.TransactionCase):
         )
         with mock.patch("zeep.client.ServiceProxy") as mock_client:
             mock_client.return_value = DemoService(response_cancel)
-            cancel = self.env["account.invoice.integration.cancel"].create(
+            cancel = self.env["account.move.integration.cancel"].create(
                 {"integration_id": integration.id, "motive": "Anulacion"}
             )
             cancel.cancel_integration()

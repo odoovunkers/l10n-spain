@@ -17,8 +17,8 @@ except (ImportError, IOError) as err:
     _logger.info(err)
 
 
-class AccountInvoiceIntegration(models.Model):
-    _inherit = "account.invoice.integration"
+class AccountMoveIntegration(models.Model):
+    _inherit = "account.move.integration"
 
     integration_status = fields.Selection(
         selection_add=[
@@ -39,7 +39,7 @@ class AccountInvoiceIntegration(models.Model):
         ]
     )
     company_id = fields.Many2one(
-        "res.company", related="invoice_id.company_id", store=True
+        "res.company", related="move_id.company_id", store=True
     )
 
     def _cron_face_update_method(self, company_domain=False):
@@ -70,7 +70,7 @@ class AccountInvoiceIntegration(models.Model):
             client = Client(
                 wsdl=self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("account.invoice.face.server", default=None),
+                .get_param("account.move.face.server", default=None),
                 wsse=MemorySignature(
                     cert.export(),
                     base64.b64decode(
@@ -90,10 +90,10 @@ class AccountInvoiceIntegration(models.Model):
             if response.resultado.codigo != "0":
                 _logger.info(_("Company %s cannot be processed") % company.display_name)
                 continue
-            for invoice in response.facturas.consultarListadoFactura:
-                integ = integration_dict[invoice.factura.numeroRegistro]
-                factura = invoice.factura
-                if invoice.codigo != "0":
+            for move in response.facturas.consultarListadoFactura:
+                integ = integration_dict[move.factura.numeroRegistro]
+                factura = move.factura
+                if move.codigo != "0":
                     # Probably processed from another system
                     continue
                 process_code = "face-" + factura.tramitacion.codigo
@@ -102,9 +102,9 @@ class AccountInvoiceIntegration(models.Model):
                     integ.integration_status == process_code
                     and integ.cancellation_status == revocation_code
                 ):
-                    # Nothing has changed on the invoice
+                    # Nothing has changed on the move
                     continue
-                log = self.env["account.invoice.integration.log"].create(
+                log = self.env["account.move.integration.log"].create(
                     integ.update_values()
                 )
                 log.state = "sent"
