@@ -477,11 +477,7 @@ class AccountMove(models.Model):
             partner = self.partner_id.parent_id
         else:
             partner = self.partner_id
-        return (
-            partner.facturae_version
-            or self.company_id.facturae_version
-            or "3_2"
-        )
+        return partner.facturae_version or self.company_id.facturae_version or "3_2"
 
     def _get_facturae_schema_file(self):
         return tools.file_open(
