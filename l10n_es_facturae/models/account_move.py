@@ -124,7 +124,11 @@ class AccountMove(models.Model):
         for mv in self:
             can_integrate = False
             if mv.partner_id:
-                for method in mv.partner_id.move_integration_method_ids:
+                if mv.partner_id.parent_id:
+                    partner = mv.partner_id.parent_id
+                else:
+                    partner = mv.partner_id
+                for method in partner.move_integration_method_ids:
                     if not mv.integration_ids.filtered(lambda r: r.method_id == method):
                         can_integrate = True
                         break
@@ -133,7 +137,11 @@ class AccountMove(models.Model):
     @api.depends("partner_id.facturae", "type")
     def _compute_facturae(self):
         for record in self:
-            record.facturae = record.partner_id.facturae and record.type in [
+            if record.partner_id.parent_id:
+                partner = record.partner_id.parent_id
+            else:
+                partner = record.partner_id
+            record.facturae = partner.facturae and record.type in [
                 "out_invoice",
                 "out_refund",
             ]
@@ -165,7 +173,11 @@ class AccountMove(models.Model):
         # We need to remove default type of the context because we should need
         # to create attachments and type is a defined field there
         slf = self.with_context(ctx)
-        for method in slf.partner_id.move_integration_method_ids:
+        if slf.partner_id.parent_id:
+            partner = slf.partner_id.parent_id
+        else:
+            partner = slf.partner_id
+        for method in partner.move_integration_method_ids:
             if not slf.env["account.move.integration"].search(
                 [("move_id", "=", slf.id), ("method_id", "=", method.id)]
             ):
@@ -259,7 +271,11 @@ class AccountMove(models.Model):
 
     def _get_facturae_move_attachments(self):
         result = []
-        if self.partner_id.attach_invoice_as_annex:
+        if self.partner_id.parent_id:
+            partner = self.partner_id.parent_id
+        else:
+            partner = self.partner_id
+        if partner.attach_invoice_as_annex:
             action = self.env.ref("account.account_invoices")
             content, content_type = action.render(self.ids)
             result.append(
@@ -457,8 +473,12 @@ class AccountMove(models.Model):
         return move_file, file_name
 
     def get_facturae_version(self):
+        if self.partner_id.parent_id:
+            partner = self.partner_id.parent_id
+        else:
+            partner = self.partner_id
         return (
-            self.partner_id.facturae_version
+            partner.facturae_version
             or self.company_id.facturae_version
             or "3_2"
         )
